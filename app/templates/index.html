@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- 首頁英雄區塊與搜尋框 -->
+    <section class="search-section">
+        <h1>尋找您的下一座山</h1>
+        <form action="/search" method="GET">
+            <input type="text" name="q" placeholder="輸入山岳名稱或關鍵字...">
+            <button type="submit">搜尋</button>
+        </form>
+    </section>
+
+    <!-- 山岳列表展示區 -->
+    <section class="mountain-list">
+        <!-- Jinja2 for loop: 顯示所有/過濾後的山岳 -->
+    </section>
+{% endblock %}

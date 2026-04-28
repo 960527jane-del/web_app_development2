@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- 山岳基本資訊 -->
+    <section class="mountain-header">
+        <!-- 顯示名稱、海拔、位置等 -->
+    </section>
+
+    <!-- 安全警示指標 -->
+    <section class="safety-warnings">
+        <!-- 顯示警示內容 -->
+    </section>
+
+    <!-- 裝備清單與注意事項 -->
+    <section class="equipment-list">
+        <!-- 顯示裝備與注意事項 -->
+    </section>
+
+    <!-- 路況時間軸 -->
+    <section class="trail-timeline">
+        <!-- 顯示時間軸 -->
+    </section>
+
+    <!-- 評論與分享區 -->
+    <section class="comments-section">
+        <h3>山友分享與評論</h3>
+        
+        <!-- 新增評論表單 -->
+        <form action="/mountain/{{ mountain.id }}/comment" method="POST">
+            <input type="text" name="user_name" placeholder="您的名字" required>
+            <textarea name="comment_content" placeholder="分享您的路況或心得..." required></textarea>
+            <button type="submit">送出評論</button>
+        </form>
+
+        <!-- 歷史留言列表 -->
+        <div class="comments-list">
+            <!-- Jinja2 for loop: 顯示評論 -->
+        </div>
+    </section>
+{% endblock %}
