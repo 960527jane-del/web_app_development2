@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="error-page">
-        <h1>404 找不到頁面</h1>
-        <p>您想找的山岳或頁面可能已經移除，或是輸入了錯誤的網址。</p>
-        <a href="/">回首頁</a>
-    </section>
+    <div class="row justify-content-center text-center py-5 mt-5">
+        <div class="col-md-6 glass-card p-5">
+            <h1 class="display-1 fw-bold text-primary mb-3">404</h1>
+            <h3 class="mb-4 text-white">找不到頁面</h3>
+            <p class="text-muted mb-4">您尋找的山岳資訊似乎已經迷路了，請確認網址是否正確，或是回到首頁重新搜尋。</p>
+            <a href="/" class="btn btn-primary px-4 py-2 fw-bold">回到首頁</a>
+        </div>
+    </div>
 {% endblock %}

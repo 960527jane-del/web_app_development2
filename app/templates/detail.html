@@ -1,40 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- 山岳基本資訊 -->
-    <section class="mountain-header">
-        <!-- 顯示名稱、海拔、位置等 -->
-    </section>
+    <!-- 返回按鈕 -->
+    <div class="mb-4">
+        <a href="/" class="btn btn-outline-light btn-sm rounded-pill px-3">&larr; 返回列表</a>
+    </div>
 
-    <!-- 安全警示指標 -->
-    <section class="safety-warnings">
-        <!-- 顯示警示內容 -->
-    </section>
+    <div class="row g-4">
+        <!-- 左側主資訊區 -->
+        <div class="col-lg-8">
+            <div class="glass-card p-4 mb-4">
+                <h1 class="display-5 fw-bold text-primary mb-2">{{ mountain.name }}</h1>
+                <p class="text-muted fs-5 mb-4">📍 {{ mountain.location }} | ⛰️ 海拔 {{ mountain.altitude }} 公尺</p>
+                
+                <h5 class="fw-bold mb-3 text-white">📖 山岳簡介</h5>
+                <p class="lh-lg text-light">{{ mountain.description }}</p>
+            </div>
 
-    <!-- 裝備清單與注意事項 -->
-    <section class="equipment-list">
-        <!-- 顯示裝備與注意事項 -->
-    </section>
+            {% if mountain.safety_warning %}
+            <div class="glass-card p-4 mb-4 border-danger" style="border-width: 2px;">
+                <h5 class="fw-bold text-danger mb-3">⚠️ 安全警示</h5>
+                <p class="mb-0 text-light">{{ mountain.safety_warning }}</p>
+            </div>
+            {% endif %}
 
-    <!-- 路況時間軸 -->
-    <section class="trail-timeline">
-        <!-- 顯示時間軸 -->
-    </section>
+            <div class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-3 text-white">⏱️ 路況時間軸</h5>
+                <div class="timeline-container mt-3">
+                    <p class="lh-lg text-light" style="white-space: pre-wrap;">{{ mountain.trail_timeline }}</p>
+                </div>
+            </div>
+        </div>
 
-    <!-- 評論與分享區 -->
-    <section class="comments-section">
-        <h3>山友分享與評論</h3>
+        <!-- 右側側邊欄 -->
+        <div class="col-lg-4">
+            <div class="glass-card p-4 mb-4">
+                <h5 class="fw-bold mb-3 text-white">🎒 裝備與注意事項</h5>
+                <p class="lh-lg text-light" style="white-space: pre-wrap;">{{ mountain.equipment_list }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 留言區 -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="fw-bold mb-4 text-white">山友回報與分享</h3>
+        </div>
         
-        <!-- 新增評論表單 -->
-        <form action="/mountain/{{ mountain.id }}/comment" method="POST">
-            <input type="text" name="user_name" placeholder="您的名字" required>
-            <textarea name="comment_content" placeholder="分享您的路況或心得..." required></textarea>
-            <button type="submit">送出評論</button>
-        </form>
+        <!-- 新增留言表單 -->
+        <div class="col-lg-5 mb-4">
+            <div class="glass-card p-4">
+                <h5 class="mb-3 text-white">新增評論</h5>
+                <form action="{{ url_for('mountain.add_comment', mountain_id=mountain.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label text-light">您的稱呼</label>
+                        <input type="text" name="user_name" class="form-control bg-dark text-white border-secondary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">路況回報或心得</label>
+                        <textarea name="comment_content" class="form-control bg-dark text-white border-secondary" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">發布評論</button>
+                </form>
+            </div>
+        </div>
 
         <!-- 歷史留言列表 -->
-        <div class="comments-list">
-            <!-- Jinja2 for loop: 顯示評論 -->
+        <div class="col-lg-7">
+            {% if comments %}
+                {% for c in comments %}
+                <div class="glass-card p-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="fw-bold text-accent mb-0">{{ c.user_name }}</h6>
+                        <small class="text-muted">{{ c.created_at }}</small>
+                    </div>
+                    <p class="mb-0 text-light">{{ c.comment_content }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="glass-card p-4 text-center">
+                    <p class="text-muted mb-0">目前還沒有山友分享，搶先成為第一位吧！</p>
+                </div>
+            {% endif %}
         </div>
-    </section>
+    </div>
 {% endblock %}

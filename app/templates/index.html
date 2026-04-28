@@ -1,17 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- 首頁英雄區塊與搜尋框 -->
-    <section class="search-section">
-        <h1>尋找您的下一座山</h1>
-        <form action="/search" method="GET">
-            <input type="text" name="q" placeholder="輸入山岳名稱或關鍵字...">
-            <button type="submit">搜尋</button>
-        </form>
-    </section>
+    <!-- 英雄區塊與搜尋 -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 fw-bold mb-4 text-white">探索台灣群山</h1>
+            <p class="lead text-light mb-4">掌握最即時的山岳資訊、安全警示與山友回報。</p>
+            <form action="{{ url_for('main.search') }}" method="GET" class="d-flex justify-content-center">
+                <div class="input-group input-group-lg w-75 shadow-lg">
+                    <input type="text" name="q" class="form-control bg-dark text-white border-secondary" placeholder="輸入山名或地區..." value="{{ keyword if keyword else '' }}">
+                    <button class="btn btn-primary px-4 fw-bold" type="submit">搜尋</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <!-- 山岳列表展示區 -->
-    <section class="mountain-list">
-        <!-- Jinja2 for loop: 顯示所有/過濾後的山岳 -->
-    </section>
+    <!-- 山岳列表 -->
+    <div class="row g-4">
+        {% if mountains %}
+            {% for m in mountains %}
+            <div class="col-md-4">
+                <div class="card h-100 glass-card text-white">
+                    <div class="card-body">
+                        <h4 class="card-title fw-bold text-primary">{{ m.name }}</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">📍 {{ m.location }} | ⛰️ {{ m.altitude }}m</h6>
+                        <p class="card-text mt-3">{{ m.description[:50] }}...</p>
+                        
+                        {% if m.safety_warning %}
+                        <span class="badge bg-danger mb-3 px-2 py-1">⚠️ 安全警示</span>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="card-footer border-0 bg-transparent text-end pb-3">
+                        <a href="{{ url_for('mountain.detail', mountain_id=m.id) }}" class="btn btn-outline-light btn-sm px-3 rounded-pill">查看詳情 &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <h3 class="text-muted">目前沒有符合的山岳資料</h3>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
